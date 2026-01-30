@@ -1,0 +1,17 @@
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema(
+    {
+        name: {type: String},
+        email: {type: String, trim: true, lowercase: true, unique: true, sparse: true},
+        phone: {type: String, trim: true, unique: true, sparse: true},
+        hashPassword: {type: String},
+        address: {type: String},
+        role: {type: String, enum : ["customer", "provider", "admin"]},
+    },
+    {
+        timestamps: true,
+    }
+)
+
+export const User = mongoose.model('User', userSchema)
