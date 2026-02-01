@@ -7,9 +7,10 @@
     "start": "node src/server.js"
   },
   "dependencies": {
-    "express": "^4",
+    "bcryptjs": "^3.0.3",
     "cors": "^2",
     "dotenv": "^16",
+    "express": "^4",
     "mongoose": "^8"
   },
   "devDependencies": {

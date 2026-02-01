@@ -2,12 +2,13 @@
 
 import { Router } from "express";
 import { catchAsync } from "../../utils/catchAsync.js";
-import { createUser } from "./user.controller.js";
+import { createUser, getAllUsers } from "./user.controller.js";
 
 // module router
 const router = Router();
 
-router.post('/', createUser)
+// router.post('/', createUser)
+router.get("/", getAllUsers)
 
 // export router
 export default router;

@@ -16,4 +16,5 @@ export const env = {
   PORT: Number(process.env.PORT) || 5000,
   MONGODB_URL: required("MONGODB_URL"),
   JWT_SECRET: required("JWT_SECRET"),
+  BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS) || 10,
 };

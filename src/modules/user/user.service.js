@@ -29,3 +29,8 @@ export const createUserService = async (payload) => {
     }
 
 }
+
+export const getAllUsersService = async () =>{
+    const users = await User.find();
+    return users;
+}
