@@ -12,3 +12,20 @@ export const getAllUsers = catchAsync(async (req, res) => {
   const data = await getAllUsersService();
   return sendResponse(res, {statusCode: 200, message: "users retrieved successfully", data})
 })
+
+export const me = catchAsync(async(req, res) =>{
+  const u = req.user;
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: 'profile fatched', 
+    data: {
+      id : u._id,
+      role: u.role,
+      email: u.email || "",
+      phone: u.phone || "",
+      isActive: u.isActive,
+      isBlocked: u.isBlocked,
+    },  
+  })
+})
