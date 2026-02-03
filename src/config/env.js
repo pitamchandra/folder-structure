@@ -17,4 +17,5 @@ export const env = {
   MONGODB_URL: required("MONGODB_URL"),
   JWT_SECRET: required("JWT_SECRET"),
   BCRYPT_SALT_ROUNDS: Number(process.env.BCRYPT_SALT_ROUNDS) || 10,
+  JWT_EXPIRES_IN: Number(process.env.JWT_EXPIRES_IN) || "7d"
 };

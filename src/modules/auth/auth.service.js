@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { env } from "../../config/env.js";
 import AppError from "../../utils/AppError.js";
 import { User } from '../user/user.model.js'
-
+import { signToken } from "../../utils/jwt.js";
 
 
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -56,3 +56,38 @@ export const registerService = async (payload) => {
     })
 }
 
+export const loginService = async (payload) => {
+    const identifierRaw = String(payload?.identifier || '').trim();
+    const password = String(payload?.password || '');
+
+    if (!identifierRaw) throw new AppError("Email or phone is required at identifier field", 400);
+    if (!password) throw new AppError("Password is required.", 400);
+
+    const isEmail = identifierRaw.includes('@');
+    const query = isEmail ? { email: identifierRaw.toLowerCase() } : { phone: identifierRaw };
+
+    const user = await User.findOne(query).select("+hashPassword");
+
+    if (!user) throw new AppError('invalid credentials', 401);
+
+    if (!user.isActive) throw new AppError('account is in active', 403);
+    if (user.isBlocked) throw new AppError('account is blocked', 403);
+    
+    const ok = await bcrypt.compare(password, user.hashPassword);
+
+    if(!ok) throw new AppError('invalid credentials' , 401);
+
+    const token = signToken({ sub: user._id.toString(), role: user.role});
+
+    return{
+        token,
+        user: {
+            id: user._id,
+            role: user.role,
+            email: user.email || null,
+            phone: user.phone || null,
+            isActive: user.isActive,
+            isBlocked: user.isBlocked,
+        }
+    }
+}
